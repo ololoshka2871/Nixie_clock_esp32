@@ -18,6 +18,19 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="Nixie\BasicGroupSelector.cs" />
+    <Compile Include="Nixie\ByteDataBuffer.cs" />
+    <Compile Include="Nixie\DynamicIndicatorUpdater.cs" />
+    <Compile Include="Nixie\GPIOOutDataPort.cs" />
+    <Compile Include="Nixie\ID1Datapolicy.cs" />
+    <Compile Include="Nixie\IDataPolicy.cs" />
+    <Compile Include="Nixie\IOutDataPort.cs" />
+    <Compile Include="Nixie\IEncoder.cs" />
+    <Compile Include="Nixie\IIndicatorGroupSelector.cs" />
+    <Compile Include="Nixie\INixieDriver.cs" />
+    <Compile Include="Nixie\IRawDataBuffer.cs" />
+    <Compile Include="Nixie\IIndicatorUpdater.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -27,9 +40,27 @@
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
+    <Reference Include="nanoFramework.Hardware.Esp32, Version=1.0.10.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.Hardware.Esp32.1.0.10-preview.21\lib\nanoFramework.Hardware.Esp32.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="nanoFramework.Runtime.Events, Version=1.0.8.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.0.8-preview.20\lib\nanoFramework.Runtime.Events.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="Windows.Devices.Gpio, Version=1.2.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.Windows.Devices.Gpio.1.2.0-preview.1\lib\Windows.Devices.Gpio.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\nanoFramework.Hardware.Esp32.DynamicIndication\nanoFramework.Hardware.Esp32.DynamicIndication\nanoFramework.Hardware.Esp32.DynamicIndication.nfproj" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
   <ProjectExtensions>

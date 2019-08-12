@@ -9,37 +9,21 @@ namespace Nixie_clock_esp32
 		public static void Main()
 		{
 			Console.WriteLine("Hello world!");
-			/*
-			var nixie_ctrl = new DynamicIndicatorUpdater(
-				new ID1Datapolicy(new GPIOOutDataPort(Config.NixieDataPortPins)),
-				new BasicGroupSelector(new GPIOOutDataPort(Config.NixieCtrlPort)))
-			{
-				Data = new ByteDataBuffer(6),
-				Enabled = true
-			};
-
-			var ndp0 = new GPIODataPort(Config.NixieDataPortPins);
-			var gctrl = new GPIODataPort(Config.NixieCtrlPort);
-
-			ndp0.Value = 0x53;
-
-			while (true)
-			{
-				gctrl.Value = 0b001;
-				Thread.Sleep(20);
-				gctrl.Value = 0b010;
-				Thread.Sleep(20);
-				gctrl.Value = 0b100;
-				Thread.Sleep(20);
-			}
-			*/
-
 
 			Controller updater = new Controller(Config.NixieDataPortPins, Config.NixieCtrlPort, 4);
-			var testdata = new uint[] { 3, 2, 4, 1, 8, 13 };
 			updater.UpdatePeriod_us = 5000;
-			updater.SetData(testdata);
 			updater.Enabled = true;
+
+			for (int i = 0; i < 2; ++i)
+			{
+				// 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | off
+				// 3 | 2 | 4 | 1 | 8 | 13| 5 | 12| 9 | 0 | 10
+				updater.SetData(new uint[] { 3, 2, 4, 1, 8, 13 });
+				Thread.Sleep(3000);
+				updater.SetData(new uint[] { 5, 12, 9, 0, 10, 10 });
+				Thread.Sleep(3000);
+			}
+			updater.Dispose();
 
 			Thread.Sleep(Timeout.Infinite);
 		}

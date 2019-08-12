@@ -36,16 +36,9 @@ namespace Nixie_clock_esp32
 
 
 			Controller updater = new Controller(Config.NixieDataPortPins, Config.NixieCtrlPort, 4);
-			var testdata = new uint[] { 2, 3, 4, 5, 6, 7 };
+			var testdata = new uint[] { 3, 2, 4, 1, 8, 13 };
+			updater.UpdatePeriod_us = 5000;
 			updater.SetData(testdata);
-			
-			if (updater.TestData(testdata))
-			{
-				Console.WriteLine("Test passed!");
-			} else
-			{
-				Console.WriteLine("Test failed!");
-			}
 			updater.Enabled = true;
 
 			Thread.Sleep(Timeout.Infinite);

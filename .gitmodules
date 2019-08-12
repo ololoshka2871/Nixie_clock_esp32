@@ -1,0 +1,3 @@
+[submodule "nanoFramework.Hardware.Esp32.DynamicIndication"]
+	path = nanoFramework.Hardware.Esp32.DynamicIndication
+	url = https://github.com/ololoshka2871/nanoFramework.Hardware.Esp32.DynamicIndication.git

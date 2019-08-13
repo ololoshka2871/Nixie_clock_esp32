@@ -12,7 +12,7 @@
 		/// </summary>
 		/// <param name="input">Строка символов</param>
 		/// <returns>Абстрактный объект, содержащий набор кодов для отправки на индикаторы</returns>
-		IRawDataBuffer Encode(string input);
+		uint[] Encode(string input);
 
 		#endregion Methods
 	}

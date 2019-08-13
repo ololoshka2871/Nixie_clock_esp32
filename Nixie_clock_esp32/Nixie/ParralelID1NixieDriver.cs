@@ -4,7 +4,7 @@ namespace Nixie_clock_esp32.Nixie
 {
 	class ParralelID1NixieDriver : INixieDriver
 	{
-		ParralelID1NixieDriver(int[] dataPins, int[] selectorPins, int dataBitsPreIndicator, 
+		public ParralelID1NixieDriver(int[] dataPins, int[] selectorPins, int dataBitsPreIndicator, 
 			IEncoder encoder)
 		{
 			controller = new Controller(dataPins, selectorPins, dataBitsPreIndicator);
@@ -25,11 +25,16 @@ namespace Nixie_clock_esp32.Nixie
 
 		public string Text
 		{
-			get => throw new System.NotImplementedException();
-			set => throw new System.NotImplementedException();
+			get => text;
+			set
+			{
+				text = value;
+				controller.SetData(encoder.Encode(text));
+			}
 		}
 
 		private Controller controller;
 		private IEncoder encoder;
+		private string text;
 	}
 }

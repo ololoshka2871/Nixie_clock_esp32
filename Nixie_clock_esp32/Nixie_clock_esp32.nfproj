@@ -18,15 +18,18 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
+    <Compile Include="Clock\ClockEventArgs.cs" />
+    <Compile Include="Clock\DateTimePrinter.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="I2C1PinPolicy.cs" />
+    <Compile Include="Nixie\ID1DataEncoder.cs" />
     <Compile Include="IPinFunctionPolicy.cs" />
     <Compile Include="Nixie\IEncoder.cs" />
     <Compile Include="Nixie\INixieDriver.cs" />
     <Compile Include="Nixie\ParralelID1NixieDriver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RTC_Controller.cs" />
+    <Compile Include="Clock\RTC_Controller.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=1.2.6.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">

@@ -3,10 +3,22 @@ using nF.Devices.DS1307;
 using System;
 using Windows.Devices.Gpio;
 
-namespace Nixie_clock_esp32
+namespace Nixie_clock_esp32.Clock
 {
 	internal class RTC_Controller : IDisposable
 	{
+		#region Delegates
+
+		public delegate void SecondsCb(object sender, ClockEventArgs arg);
+
+		#endregion Delegates
+
+		#region Events
+
+		public event SecondsCb On1Spassed;
+
+		#endregion Events
+
 		#region Constructors
 
 		public RTC_Controller(string I2Cbus, int SQW_pin_n,
@@ -62,7 +74,16 @@ namespace Nixie_clock_esp32
 			if (time.Year < 2100)
 			{
 				Rtc.SetSystemTime(time);
+				InvokeOn1Spassed(time);
+			} else
+			{
+				InvokeOn1Spassed(DateTime.UtcNow, false);
 			}
+		}
+
+		private void InvokeOn1Spassed(DateTime time, bool rtc_error = false)
+		{
+			On1Spassed?.Invoke(this, new ClockEventArgs(time, rtc_error));
 		}
 
 		#endregion Methods

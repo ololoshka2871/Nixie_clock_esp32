@@ -26,5 +26,9 @@
 			2,	// TG1
 			14	// TG2
 		};
+
+		public const int SDA = 21;
+		public const int SCL = 22;
+		public const int SQW = 23;
 	}
 }

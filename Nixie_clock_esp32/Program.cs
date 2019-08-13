@@ -10,6 +10,9 @@ namespace Nixie_clock_esp32
 		{
 			Console.WriteLine("Hello world!");
 
+			var rtc_controller = new RTC_Controller("I2C1", 
+				Config.SQW, new I2C1PinPolicy(Config.SDA, Config.SCL));
+
 			Controller updater = new Controller(Config.NixieDataPortPins, Config.NixieCtrlPort, 4);
 			updater.UpdatePeriod_us = 5000;
 			updater.Enabled = true;
@@ -23,8 +26,7 @@ namespace Nixie_clock_esp32
 				updater.SetData(new uint[] { 5, 12, 9, 0, 10, 10 });
 				Thread.Sleep(3000);
 			}
-			updater.Dispose();
-
+					   
 			Thread.Sleep(Timeout.Infinite);
 		}
 	}

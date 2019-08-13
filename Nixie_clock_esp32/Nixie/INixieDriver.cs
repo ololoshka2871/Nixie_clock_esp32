@@ -5,5 +5,7 @@
 	/// </summary>
 	internal interface INixieDriver
 	{
+		bool Enabled { get; set; }
+		string Text { get; set; }
 	}
 }

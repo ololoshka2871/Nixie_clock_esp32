@@ -67,6 +67,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\nanoFramework.Hardware.Esp32.RMT.Tx\nanoFramework.Hardware.Esp32.RMT\nanoFramework.Hardware.Esp32.RMT.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hardware.Esp32.DynamicIndication\nanoFramework.Hardware.Esp32.DynamicIndication\nanoFramework.Hardware.Esp32.DynamicIndication.nfproj" />
     <ProjectReference Include="..\nF.Devices.DS1307\nF.Devices.DS1307.nfproj" />
   </ItemGroup>

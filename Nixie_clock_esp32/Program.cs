@@ -2,6 +2,7 @@
 using System.Threading;
 using Nixie_clock_esp32.Nixie;
 using Nixie_clock_esp32.Clock;
+using nanoFramework.Hardware.Esp32.RMT.Tx;
 
 namespace Nixie_clock_esp32
 {
@@ -17,6 +18,22 @@ namespace Nixie_clock_esp32
 		public static void Main()
 		{
 			Console.WriteLine("Hello world!");
+
+			var tx = Transmitter.Register(Config.LED_DATA_PIN);
+			tx.ClockDivider = 4;
+
+			var pulses = new PulseCommandList();
+			pulses
+				.AddState(false, PulseCommand.MAX_DURATION)
+				.AddState(true, PulseCommand.MAX_DURATION)
+				.AddState(false, PulseCommand.MAX_DURATION)
+				.AddState(true, PulseCommand.MAX_DURATION)
+				.AddState(false, 100)
+				.AddState(false, 200)
+				.AddState(true, 200)
+				.AddState(false, 200);
+
+			tx.Send(pulses);
 
 			var rtc_controller = new RTC_Controller("I2C1", Config.SQW, 
 				new I2C1PinPolicy(Config.SDA, Config.SCL));

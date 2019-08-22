@@ -37,7 +37,8 @@ namespace Nixie_clock_esp32
 			19	// D4B
 		};
 
-		public static readonly int LED_DATA_PIN = 15;
+		public const int LED_DATA_PIN = 15;
+		public const uint LEDS_COUNT = 6;
 
 		#endregion Fields
 

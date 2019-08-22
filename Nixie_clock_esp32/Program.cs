@@ -2,7 +2,7 @@
 using System.Threading;
 using Nixie_clock_esp32.Nixie;
 using Nixie_clock_esp32.Clock;
-using nanoFramework.Hardware.Esp32.RMT.Tx;
+using nanoFramework.Hardware.Esp32.RMT.NeoPixel;
 
 namespace Nixie_clock_esp32
 {
@@ -19,22 +19,16 @@ namespace Nixie_clock_esp32
 		{
 			Console.WriteLine("Hello world!");
 
-			var tx = Transmitter.Register(Config.LED_DATA_PIN);
-			tx.ClockDivider = 4;
+			var strip = new NeopixelChain(2, 6);
+			strip[0] = new Color() { R = 2, G = 1, B = 3 };
+			strip[1] = new Color() { R = 50, G = 50, B = 50 };
+			strip[2] = new Color() { R = 100, G = 100, B = 100 };
+			strip[3] = new Color() { R = 150, G = 150, B = 150 };
+			strip[4] = new Color() { R = 200, G = 200, B = 200 };
+			strip[5] = new Color() { R = 0xff, G = 0xff, B = 0xff };
+			strip.Update();
 
-			var pulses = new PulseCommandList();
-			pulses
-				.AddState(false, PulseCommand.MAX_DURATION)
-				.AddState(true, PulseCommand.MAX_DURATION)
-				.AddState(false, PulseCommand.MAX_DURATION)
-				.AddState(true, PulseCommand.MAX_DURATION)
-				.AddState(false, 100)
-				.AddState(false, 200)
-				.AddState(true, 200)
-				.AddState(false, 200);
-
-			tx.Send(pulses);
-
+			/*
 			var rtc_controller = new RTC_Controller("I2C1", Config.SQW, 
 				new I2C1PinPolicy(Config.SDA, Config.SCL));
 			rtc_controller.On1Spassed += UpdateDate;
@@ -45,7 +39,7 @@ namespace Nixie_clock_esp32
 				UpdatePeriod_us = 5000,
 				Enabled = true
 			};
-					   
+			*/
 			Thread.Sleep(Timeout.Infinite);
 		}
 	}

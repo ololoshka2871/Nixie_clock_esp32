@@ -1,3 +1,6 @@
 [submodule "nanoFramework.Hardware.Esp32.DynamicIndication"]
 	path = nanoFramework.Hardware.Esp32.DynamicIndication
 	url = https://github.com/ololoshka2871/nanoFramework.Hardware.Esp32.DynamicIndication.git
+[submodule "nanoFramework.Hardware.Esp32.RMT.NeoPixel"]
+	path = nanoFramework.Hardware.Esp32.RMT.NeoPixel
+	url = https://github.com/ololoshka2871/nanoFramework.Hardware.Esp32.RMT.NeoPixel.git

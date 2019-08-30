@@ -2,6 +2,7 @@
 using System.Threading;
 using Nixie_clock_esp32.Nixie;
 using Nixie_clock_esp32.Clock;
+using nanoFramework.Hardware.Esp32;
 using nanoFramework.Hardware.Esp32.RMT.NeoPixel;
 
 namespace Nixie_clock_esp32
@@ -10,30 +11,39 @@ namespace Nixie_clock_esp32
 	{
 		private static ParralelID1NixieDriver NixieCtrl;
 		private static NeopixelChain strip;
+		private static HighResTimer timer;
 
-		private const int round = 5000;
+		private const int round = 1000;
 		private static int c = 0;
+		private const int LedPeriod_ms = 20;
+		private static float Hstep;
+
+		const int MaxH = 360;
+		const float H1ms = MaxH / (float)round;
 
 		private static void UpdateDate(object sender, ClockEventArgs arg)
 		{
 			NixieCtrl.Text = DateTimePrinter.PrintTime(arg.time);
+			if (c >= round)
+			{
+				c = 0;
+			}
 		}
 
-		private static void update_color(object state)
+		private static void update_color(HighResTimer sender, object e)
 		{
-			const int MaxH = 360 * 512;
-			const int H1ms = MaxH / round;
-			
-			int Hstep = 500 * H1ms / (int)strip.Size;
-			var srcH = c * H1ms;
-
-			for (uint i = 0; i < strip.Size; ++i)
+			if (c <= round)
 			{
-				strip[i].SetHSV((int)((srcH + Hstep * i) % MaxH), 255, 255);
-			}
-			strip.Update();
+				var srcH = c * H1ms;
 
-			c = (c + 10) % round;
+				for (int i = 0; i < strip.Size; ++i)
+				{
+					strip[i].SetHSV((int)((srcH + Hstep * i) % MaxH), 1.0f, 1.0f);
+				}
+				strip.Update();
+
+				c += LedPeriod_ms;
+			}
 		}
 
 		public static void Main()
@@ -41,17 +51,29 @@ namespace Nixie_clock_esp32
 			Console.WriteLine("Hello world!");
 
 			strip = new NeopixelChain(Config.LED_DATA_PIN, Config.LEDS_COUNT);
-			
-			var timer = new Timer(update_color, null, 0, 10);
+
+			timer = new HighResTimer();
+			timer.OnHighResTimerExpired += update_color;
+			Hstep = MaxH / (float)strip.Size;
+
+			timer.StartOnePeriodic(LedPeriod_ms * 1000);
 			/*
-			strip[0] = new Color() { R = 255, G = 0, B = 0 };
-			strip[1] = new Color() { R = 0, G = 255, B = 0 };
-			strip[2] = new Color() { R = 0, G = 0, B = 255 };
-			strip[3] = new Color() { R = 127, G = 0, B = 127 };
-			strip[4] = new Color() { R = 127, G = 127, B = 0 };
-			strip[5] = new Color() { R = 0, G = 127, B = 127 };
 			strip.Update();
 			*/
+
+			/*
+			var tx = nanoFramework.Hardware.Esp32.RMT.Tx.Transmitter.Register(Config.LED_DATA_PIN);
+			tx.CarierEnabled = false;
+			tx.TransmitIdleLevel = true;
+			tx.IsTransmitIdleEnabled = true;
+			tx.ClockDivider = 4;
+
+			var cmd = new nanoFramework.Hardware.Esp32.RMT.Tx.PulseCommandList();
+			cmd.AddLevel(true, 0x100).AddLevel(false, 0x50);
+			while(true)
+				tx.Send(cmd);
+				*/
+
 
 			var rtc_controller = new RTC_Controller("I2C1", Config.SQW, 
 				new I2C1PinPolicy(Config.SDA, Config.SCL));
@@ -63,6 +85,11 @@ namespace Nixie_clock_esp32
 				UpdatePeriod_us = 5000,
 				Enabled = true
 			};
+			
+			/*
+			while (true)
+				update_color(null, null);
+				*/
 
 			Thread.Sleep(Timeout.Infinite);
 		}
